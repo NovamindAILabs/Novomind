@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Novomind AI</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: #000;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #333;
+      padding: 10px;
+    }
+
+    .sidebar-header {
+      font-size: 18px;
+      font-weight: bold;
+      padding: 12px;
+      border-bottom: 1px solid #333;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+    }
+
+    .home-link {
+      color: #0af;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .upgrade {
+      margin-top: auto;
+      padding: 10px;
+      background: #111;
+      border-top: 1px solid #333;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .upgrade a{
+      color: #0af;
+      text-decoration:none;
+      font-weight:bold;
+    }
+    /* Main Chat Section */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .top-bar {
+      text-align: center;
+      padding: 12px;
+      background: #111;
+      border-bottom: 1px solid #333;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .chat-area {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .footer {
+      padding: 10px;
+      font-size: 13px;
+      text-align: center;
+      border-top: 1px solid #333;
+      background: #000;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <span>Menu</span>
+      <a href="/" class="home-link">🏠 Home</a>
+    </div>
+
+    <div class="upgrade">
+      <a href="pricing.html">⚡ Upgrade to Pro</a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="top-bar">Novomind AI</div>
+
+    <div class="chat-area" id="chat">
+      <p>👋 Start chatting with Novomind AI...</p>
+    </div>
+
+    <div class="footer">© All Rights Reserved Novomind    <div style="padding:15px;border-top:1px solid #333;background:#111;display:flex;gap:10px;">
+      <input type="text" id="userInput" placeholder="Type your message..." style="flex:1;padding:12px;border-radius:6px;border:none;background:#222;color:white;">
+      <button onclick="sendMessage()" style="padding:12px 18px;background:#0af;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">Send</button>
+    </div>
+  </div>
+
+  <script>
+    function sendMessage(){
+      let box=document.getElementById("userInput");
+      if(box.value.trim()=="") return;
+
+      let chat=document.getElementById("chat");
+      let div=document.createElement("p");
+      div.style.background="#222";
+      div.style.padding="10px";
+      div.style.borderRadius="6px";
+      div.style.margin="5px 0";
+      div.innerText="🧑‍💻 You: "+box.value;
+      chat.appendChild(div);
+
+      setTimeout(()=>{
+        let res=document.createElement("p");
+        res.style.background="#333";
+        res.style.padding="10px";
+        res.style.borderRadius="6px";
+        res.innerText="🤖 Novomind AI: Working on it...";
+        chat.appendChild(res);
+      },600);
+
+      box.value="";
+      chat.scrollTop=chat.scrollHeight;
+    }
+  </script>
+</body>
+</html>

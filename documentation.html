@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation | NovomindAI</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Novomind<span>AI</span></a>
+                <nav class="nav-links">
+                    <a href="features.html">Features</a>
+                    <a href="use-cases.html">Use Cases</a>
+                    <a href="pricing.html">Pricing</a>
+                    <a href="documentation.html" class="active">Documentation</a>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="login.html" class="btn btn-secondary">Login</a>
+                    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="page-hero">
+        <div class="container">
+            <h1>Developer Documentation</h1>
+            <p>Everything you need to integrate NovomindAI into your applications</p>
+        </div>
+    </section>
+
+    <section class="documentation">
+        <div class="container">
+            <div class="doc-layout">
+                <div class="doc-sidebar">
+                    <h4>Getting Started</h4>
+                    <ul>
+                        <li><a href="#introduction">Introduction</a></li>
+                        <li><a href="#quick-start">Quick Start</a></li>
+                        <li><a href="#authentication">Authentication</a></li>
+                    </ul>
+                    <h4>API Reference</h4>
+                    <ul>
+                        <li><a href="#chat-api">Chat API</a></li>
+                        <li><a href="#users-api">Users API</a></li>
+                        <li><a href="#analytics-api">Analytics API</a></li>
+                    </ul>
+                </div>
+                <div class="doc-content">
+                    <h2 id="introduction">Introduction</h2>
+                    <p>Welcome to NovomindAI's developer documentation. Our API allows you to integrate advanced conversational AI into your applications.</p>
+                    
+                    <h2 id="quick-start">Quick Start</h2>
+                    <pre><code>// Initialize NovomindAI client
+const novomind = new NovomindAI('your-api-key');
+
+// Send a message
+const response = await novomind.chat.send({
+    message: "Hello, how are you?",
+    context: "general"
+});</code></pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <!-- Footer content -->
+        </div>
+    </footer>
+</body>
+</html>
