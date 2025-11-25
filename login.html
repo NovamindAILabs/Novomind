@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <!-- Header (same as signup) -->
+  <!-- Header -->
   <header>
     <div class="container">
       <div class="header-content">
@@ -58,9 +58,10 @@
         <span>Or login with</span>
       </div>
 
+      <!-- SOCIAL LOGIN BUTTONS -->
       <div class="social-signup">
-        <a href="#" class="social-btn">Google</a>
-        <a href="#" class="social-btn">Twitter</a>
+        <button id="googleSignInBtn" class="social-btn">Login with Google</button>
+        <button id="twitterSignInBtn" class="social-btn">Login with Twitter</button>
       </div>
 
       <div class="login-link">
@@ -69,7 +70,7 @@
     </div>
   </section>
 
-  <!-- Footer (same as signup) -->
+  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -117,6 +118,28 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase-config.js"></script>
+
+  <!-- SOCIAL LOGIN HANDLERS -->
+  <script>
+    document.getElementById("googleSignInBtn").addEventListener("click", async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://yourdomain.com/dashboard.html"
+        }
+      });
+    });
+
+    document.getElementById("twitterSignInBtn").addEventListener("click", async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: "twitter",
+        options: {
+          redirectTo: "https://yourdomain.com/dashboard.html"
+        }
+      });
+    });
+  </script>
+
   <script src="assets/js/login.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
