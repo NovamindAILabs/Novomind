@@ -58,7 +58,6 @@
       <div class="social-signup">
         <button id="googleSignupBtn" class="social-btn">Sign Up with Google</button>
         <button id="githubSignUpBtn" class="social-btn">Sign Up with GitHub</button>
-
       </div>
 
       <div class="login-link">
@@ -116,12 +115,11 @@
     </div>
   </footer>
 
-
-  <!-- Scripts -->
+  <!-- Supabase Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/supabase-config.js"></script>
 
-  <!-- SOCIAL SIGNUP HANDLERS -->
+  <!-- SOCIAL + EMAIL SIGNUP LOGIC -->
   <script>
     // GOOGLE SIGNUP
     document.getElementById("googleSignupBtn").addEventListener("click", async () => {
@@ -133,10 +131,10 @@
       });
     });
 
-    // TWITTER SIGNUP
-    document.getElementById("twitterSignupBtn").addEventListener("click", async () => {
+    // GITHUB SIGNUP
+    document.getElementById("githubSignUpBtn").addEventListener("click", async () => {
       await supabase.auth.signInWithOAuth({
-        provider: "twitter",
+        provider: "github",
         options: {
           redirectTo: "https://novomindai.xyz/dashboard.html"
         }
@@ -151,29 +149,16 @@
       const password = document.getElementById("password").value;
 
       const { data, error } = await supabase.auth.signUp({
-        email: email,
-        password: password
+        email,
+        password
       });
 
       if (error) {
         alert("Signup failed: " + error.message);
       } else {
-        // redirect manually (Supabase will send verification email)
         window.location.href = "dashboard.html";
       }
     });
-
-    <script>
-document.getElementById("githubSignUpBtn").addEventListener("click", async () => {
-  await supabase.auth.signInWithOAuth({
-    provider: "github",
-    options: {
-      redirectTo: "https://novomindai.xyz/dashboard.html"
-    }
-  });
-});
-</script>
-
   </script>
 
 </body>
