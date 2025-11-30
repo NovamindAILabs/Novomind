@@ -120,26 +120,47 @@
   <script src="assets/js/supabase-config.js"></script>
 
   <!-- SOCIAL + EMAIL SIGNUP LOGIC -->
-  <script>
-    // GOOGLE SIGNUP
-    document.getElementById("googleSignupBtn").addEventListener("click", async () => {
-      await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: "https://novomindai.xyz/dashboard.html"
-        }
-      });
+ <script>
+  // GOOGLE SIGNUP
+  document.getElementById("googleSignupBtn").addEventListener("click", async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: "https://novomindai.xyz/dashboard.html"
+      }
+    });
+  });
+
+  // GITHUB SIGNUP
+  document.getElementById("githubSignUpBtn").addEventListener("click", async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: "https://novomindai.xyz/dashboard.html"
+      }
+    });
+  });
+
+  // EMAIL SIGNUP
+  document.getElementById("signupForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password
     });
 
-    // GITHUB SIGNUP
-    document.getElementById("githubSignUpBtn").addEventListener("click", async () => {
-      await supabase.auth.signInWithOAuth({
-        provider: "github",
-        options: {
-          redirectTo: "https://novomindai.xyz/dashboard.html"
-        }
-      });
-    });
+    if (error) {
+      alert("Signup failed: " + error.message);
+    } else {
+      window.location.href = "dashboard.html";
+    }
+  });
+</script>
+
 
     // EMAIL SIGNUP
     document.getElementById("signupForm").addEventListener("submit", async (e) => {
