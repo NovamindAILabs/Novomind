@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login | NovomindAI</title>
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body>
-
   <!-- Header -->
   <header>
     <div class="container">
@@ -56,9 +55,7 @@
         <button type="submit" class="btn btn-primary signup-btn">Login</button>
       </form>
 
-      <div class="divider">
-        <span>Or login with</span>
-      </div>
+      <div class="divider"><span>Or login with</span></div>
 
       <!-- SOCIAL LOGIN BUTTONS -->
       <div class="social-signup">
@@ -111,50 +108,76 @@
           </ul>
         </div>
       </div>
-
       <div class="footer-bottom">
         <p>&copy; 2023 NovomindAI. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-
-  <!-- Supabase Client -->
+  <!-- SINGLE MODULE SCRIPT (no nested scripts) -->
   <script type="module">
+    // --- import supabase createClient
     import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-    // 🔥 Replace with your keys
-    const supabase = createClient(
-      "YOUR_SUPABASE_URL",
-      "YOUR_SUPABASE_ANON_KEY"
-    );
+    // --- initialize client (replace with your actual values)
+    const SUPABASE_URL = "https://vuetfjqslwjlywjfgqpk.supabase.co";
+    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // <-- replace with your anon key
 
-    // Google Login
-    document.getElementById("googleSignInBtn").addEventListener("click", async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: "https://novomindai.xyz/dashboard.html"
-        }
-      });
-      if (error) alert(error.message);
-    });
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // GitHub Login (NEW + Working)
-    document.getElementById("githubSignInBtn").addEventListener("click", async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "github",
-        options: {
-          redirectTo: "https://novomindai.xyz/dashboard.html"
-        }
+    // --- helpful small helper to show errors
+    function showError(err) {
+      console.error(err);
+      if (err && err.message) alert(err.message);
+    }
+
+    // --- Email login
+    const loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) return showError(error);
+        // successful login -> go to dashboard
+        window.location.href = "/dashboard.html";
       });
-      if (error) alert(error.message);
-    });
+    }
+
+    // --- Google OAuth
+    const googleBtn = document.getElementById("googleSignInBtn");
+    if (googleBtn) {
+      googleBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: "https://novomindai.xyz/dashboard.html" // change if testing locally
+          }
+        });
+        if (error) showError(error);
+      });
+    }
+
+    // --- GitHub OAuth
+    const githubBtn = document.getElementById("githubSignInBtn");
+    if (githubBtn) {
+      githubBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const { error } = await supabase.auth.signInWithOAuth({
+          provider: "github",
+          options: {
+            redirectTo: "https://novomindai.xyz/dashboard.html"
+          }
+        });
+        if (error) showError(error);
+      });
+    }
+
+    // --- Debug: log client so you can inspect it in console (optional)
+    // console.log("supabase client:", supabase);
   </script>
-
-  <!-- Email Login Script -->
-  <script src="assets/js/login.js"></script>
-  <script src="assets/js/main.js"></script>
 
 </body>
 </html>
