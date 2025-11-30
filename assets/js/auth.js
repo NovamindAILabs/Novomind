@@ -1,100 +1,75 @@
-// Initialize Supabase
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// Initialize from supabase-config.js
+// const supabase = ...
 
-// ----------------------
-//  EMAIL + PASSWORD SIGNUP
-// ----------------------
-const signupForm = document.getElementById("signupForm");
+// -----------------------------
+//  SIGNUP WITH EMAIL + PASSWORD
+// -----------------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const signupForm = document.getElementById("signupForm");
 
-if (signupForm) {
+  if (signupForm) {
     signupForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
+      e.preventDefault();
 
-        const firstName = document.getElementById("firstName").value.trim();
-        const lastName = document.getElementById("lastName").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-        const confirmPassword = document.getElementById("confirmPassword").value.trim();
+      const firstName = document.getElementById("firstName").value;
+      const lastName = document.getElementById("lastName").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-        if (password !== confirmPassword) {
-            alert("Passwords do not match.");
-            return;
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { firstName, lastName }
         }
+      });
 
-        const { data, error } = await supabaseClient.auth.signUp({
-            email,
-            password,
-            options: {
-                data: { firstName, lastName },
-                emailRedirectTo: "https://novomindai.xyz/dashboard.html"
-            }
-        });
+      if (error) {
+        alert(error.message);
+        return;
+      }
 
-        if (error) {
-            alert(error.message);
-        } else {
-            alert("Signup successful! Check your email to verify your account.");
+      window.location.href = "dashboard.html";
+    });
+  }
+
+  // -----------------------------
+  //  GOOGLE SIGNUP
+  // -----------------------------
+  const googleSignupBtn = document.querySelector(".google-signup");
+  if (googleSignupBtn) {
+    googleSignupBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      console.log("Google signup clicked");
+
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://novomindai.xyz/dashboard.html"
         }
+      });
+
+      if (error) alert(error.message);
     });
-}
+  }
 
-// ----------------------
-//  EMAIL + PASSWORD LOGIN
-// ----------------------
-const loginForm = document.getElementById("loginForm");
+  // -----------------------------
+  //  GOOGLE LOGIN
+  // -----------------------------
+  const googleLoginBtn = document.querySelector(".google-login");
+  if (googleLoginBtn) {
+    googleLoginBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      console.log("Google login clicked");
 
-if (loginForm) {
-    loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
-
-        if (error) {
-            alert(error.message);
-        } else {
-            window.location.href = "dashboard.html";
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://novomindai.xyz/dashboard.html"
         }
+      });
+
+      if (error) alert(error.message);
     });
-}
-
-// ----------------------
-//  GOOGLE SIGNUP + LOGIN
-// ----------------------
-const googleBtn = document.querySelector('.social-btn:nth-child(1)');
-
-if (googleBtn) {
-    googleBtn.addEventListener("click", async () => {
-        const { data, error } = await supabaseClient.auth.signInWithOAuth({
-            provider: "google",
-            options: {
-                redirectTo: "https://novomindai.xyz/dashboard.html"
-            }
-        });
-
-        if (error) console.log(error);
-    });
-}
-
-// ----------------------
-//  TWITTER SIGNUP + LOGIN
-// ----------------------
-const twitterBtn = document.querySelector('.social-btn:nth-child(2)');
-
-if (twitterBtn) {
-    twitterBtn.addEventListener("click", async () => {
-        const { data, error } = await supabaseClient.auth.signInWithOAuth({
-            provider: "twitter",
-            options: {
-                redirectTo: "https://novomindai.xyz/dashboard.html"
-            }
-        });
-
-        if (error) console.log(error);
-    });
-}
+  }
+});
