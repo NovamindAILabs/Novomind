@@ -162,6 +162,18 @@
         window.location.href = "dashboard.html";
       }
     });
+
+    <script>
+document.getElementById("githubSignUpBtn").addEventListener("click", async () => {
+  await supabase.auth.signInWithOAuth({
+    provider: "github",
+    options: {
+      redirectTo: "https://novomindai.xyz/dashboard.html"
+    }
+  });
+});
+</script>
+
   </script>
 
 </body>
