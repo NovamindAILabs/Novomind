@@ -1,183 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login | NovomindAI</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
 </head>
 <body>
-  <!-- Header -->
-  <header>
-    <div class="container">
-      <div class="header-content">
-        <a href="index.html" class="logo">Novomind<span>AI</span></a>
-        <nav class="nav-links">
-          <a href="features.html">Features</a>
-          <a href="use-cases.html">Use Cases</a>
-          <a href="pricing.html">Pricing</a>
-          <a href="documentation.html">Documentation</a>
-        </nav>
-        <div class="auth-buttons">
-          <a href="login.html" class="btn btn-secondary">Login</a>
-          <a href="signup.html" class="btn btn-primary">Sign Up</a>
-        </div>
-      </div>
-    </div>
-  </header>
 
-  <!-- Login Section -->
-  <section class="signup-section">
-    <div class="signup-container">
-      <div class="signup-header">
-        <h1>Welcome Back</h1>
-        <p>Login to your NovomindAI account</p>
-      </div>
+    <h2>Login</h2>
 
-      <!-- Email Login Form -->
-      <form id="loginForm">
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
-        </div>
+    <!-- GitHub Login Button -->
+    <button id="githubLoginBtn">Login with GitHub</button>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
-        </div>
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        <div class="form-options">
-          <div class="forgot-password">
-            <a href="forgot-password.html">Forgot Password?</a>
-          </div>
-        </div>
+    <script>
+        // Initialize Supabase
+        const supabaseUrl = "https://vuetfjqslwjlywjfgqpk.supabase.co";
+        const supabaseKey = "YOUR_ANON_KEY_HERE";
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-        <button type="submit" class="btn btn-primary signup-btn">Login</button>
-      </form>
+        // GitHub Login Function
+        async function loginWithGithub() {
+            try {
+                const { data, error } = await supabase.auth.signInWithOAuth({
+                    provider: "github",
+                    options: {
+                        redirectTo: "https://novomindai.xyz/dashboard.html"
+                    }
+                });
 
-      <div class="divider"><span>Or login with</span></div>
+                if (error) {
+                    console.error("GitHub Login Error:", error.message);
+                    alert("GitHub login failed: " + error.message);
+                }
+            } catch (err) {
+                console.error("Unexpected error:", err);
+            }
+        }
 
-      <!-- SOCIAL LOGIN BUTTONS -->
-      <div class="social-signup">
-        <button id="googleSignInBtn" class="social-btn">Login with Google</button>
-        <button id="githubSignInBtn" class="social-btn">Login with GitHub</button>
-      </div>
-
-      <div class="login-link">
-        Don't have an account? <a href="signup.html">Sign up</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-column">
-          <h3>Product</h3>
-          <ul>
-            <li><a href="features.html">Features</a></li>
-            <li><a href="use-cases.html">Use Cases</a></li>
-            <li><a href="pricing.html">Pricing</a></li>
-            <li><a href="documentation.html">Documentation</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Company</h3>
-          <ul>
-            <li><a href="about.html">About Us</a></li>
-            <li><a href="careers.html">Careers</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="contact.html">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Legal</h3>
-          <ul>
-            <li><a href="privacy.html">Privacy Policy</a></li>
-            <li><a href="terms.html">Terms of Service</a></li>
-          </ul>
-        </div>
-        <div class="footer-column">
-          <h3>Connect</h3>
-          <ul>
-            <li><a href="#">Apple</a></li>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">GitHub</a></li>
-            <li><a href="#">Discord</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2023 NovomindAI. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-
-  <!-- SINGLE MODULE SCRIPT (no nested scripts) -->
-  <script type="module">
-    // --- import supabase createClient
-    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-
-    // --- initialize client (replace with your actual values)
-    const SUPABASE_URL = "https://vuetfjqslwjlywjfgqpk.supabase.co";
-    const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; // <-- replace with your anon key
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    // --- helpful small helper to show errors
-    function showError(err) {
-      console.error(err);
-      if (err && err.message) alert(err.message);
-    }
-
-    // --- Email login
-    const loginForm = document.getElementById("loginForm");
-    if (loginForm) {
-      loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const email = document.getElementById("email").value.trim();
-        const password = document.getElementById("password").value.trim();
-        const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-        if (error) return showError(error);
-        // successful login -> go to dashboard
-        window.location.href = "/dashboard.html";
-      });
-    }
-
-    // --- Google OAuth
-    const googleBtn = document.getElementById("googleSignInBtn");
-    if (googleBtn) {
-      googleBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: "google",
-          options: {
-            redirectTo: "https://novomindai.xyz/dashboard.html" // change if testing locally
-          }
-        });
-        if (error) showError(error);
-      });
-    }
-
-    // --- GitHub OAuth
-    const githubBtn = document.getElementById("githubSignInBtn");
-    if (githubBtn) {
-      githubBtn.addEventListener("click", async (e) => {
-        e.preventDefault();
-        const { error } = await supabase.auth.signInWithOAuth({
-          provider: "github",
-          options: {
-            redirectTo: "https://novomindai.xyz/dashboard.html"
-          }
-        });
-        if (error) showError(error);
-      });
-    }
-
-    // --- Debug: log client so you can inspect it in console (optional)
-    // console.log("supabase client:", supabase);
-  </script>
+        // Button Listener
+        document.getElementById("githubLoginBtn").addEventListener("click", loginWithGithub);
+    </script>
 
 </body>
 </html>
