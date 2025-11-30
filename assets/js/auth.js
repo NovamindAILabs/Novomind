@@ -1,43 +1,100 @@
-// assets/js/auth.js
+// Initialize Supabase
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('signupForm');
-  if (!form) return; // safety check
+// ----------------------
+//  EMAIL + PASSWORD SIGNUP
+// ----------------------
+const signupForm = document.getElementById("signupForm");
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault(); // 🔑 Prevent page refresh
+if (signupForm) {
+    signupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const confirmPassword = document.getElementById("confirmPassword").value.trim();
 
-    // Password match check
-    if (data.password !== data.confirmPassword) {
-      alert('Passwords do not match!');
-      return;
-    }
+        if (password !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
 
-    try {
-      // Supabase sign-up
-      const { data: user, error } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-      });
+        const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: {
+                data: { firstName, lastName },
+                emailRedirectTo: "https://novomindai.xyz/dashboard.html"
+            }
+        });
 
-      if (error) {
-        alert(error.message);
-        return;
-      }
+        if (error) {
+            alert(error.message);
+        } else {
+            alert("Signup successful! Check your email to verify your account.");
+        }
+    });
+}
 
-      // Optionally, save first & last name in Supabase database (optional)
-      // const { data: profile, error: profileError } = await supabase
-      //   .from('profiles')
-      //   .insert([{ id: user.user.id, first_name: data.firstName, last_name: data.lastName }]);
+// ----------------------
+//  EMAIL + PASSWORD LOGIN
+// ----------------------
+const loginForm = document.getElementById("loginForm");
 
-      // Redirect to login page after signup
-      window.location.href = 'login.html';
-    } catch (err) {
-      console.error(err);
-      alert('Something went wrong! Check console.');
-    }
-  });
-});
+if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            alert(error.message);
+        } else {
+            window.location.href = "dashboard.html";
+        }
+    });
+}
+
+// ----------------------
+//  GOOGLE SIGNUP + LOGIN
+// ----------------------
+const googleBtn = document.querySelector('.social-btn:nth-child(1)');
+
+if (googleBtn) {
+    googleBtn.addEventListener("click", async () => {
+        const { data, error } = await supabaseClient.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: "https://novomindai.xyz/dashboard.html"
+            }
+        });
+
+        if (error) console.log(error);
+    });
+}
+
+// ----------------------
+//  TWITTER SIGNUP + LOGIN
+// ----------------------
+const twitterBtn = document.querySelector('.social-btn:nth-child(2)');
+
+if (twitterBtn) {
+    twitterBtn.addEventListener("click", async () => {
+        const { data, error } = await supabaseClient.auth.signInWithOAuth({
+            provider: "twitter",
+            options: {
+                redirectTo: "https://novomindai.xyz/dashboard.html"
+            }
+        });
+
+        if (error) console.log(error);
+    });
+}
