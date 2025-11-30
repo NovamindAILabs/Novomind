@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+
+  <!-- Header -->
   <header>
     <div class="container">
       <div class="header-content">
@@ -25,80 +27,46 @@
     </div>
   </header>
 
+  <!-- Signup Section -->
   <section class="signup-section">
     <div class="signup-container">
       <div class="signup-header">
-        <h1>Create Account</h1>
-        <p>Join NovomindAI and unlock the power of AI</p>
+        <h1>Create an Account</h1>
+        <p>Join NovomindAI and start exploring</p>
       </div>
-      
+
+      <!-- EMAIL SIGNUP FORM -->
       <form id="signupForm">
-        <div class="name-fields">
-          <div class="form-group">
-            <label for="firstName">First Name</label>
-            <input type="text" id="firstName" name="firstName" class="form-control" placeholder="Enter your first name" required>
-          </div>
-          
-          <div class="form-group">
-            <label for="lastName">Last Name</label>
-            <input type="text" id="lastName" name="lastName" class="form-control" placeholder="Enter your last name" required>
-          </div>
-        </div>
-        
         <div class="form-group">
           <label for="email">Email Address</label>
           <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
         </div>
-        
+
         <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" id="password" name="password" class="form-control" placeholder="Create a strong password" required>
-          <div class="password-strength">
-            <div class="strength-meter" id="passwordStrength"></div>
-          </div>
-          <div class="password-requirements">
-            <div class="requirement" id="lengthReq">At least 8 characters</div>
-            <div class="requirement" id="uppercaseReq">One uppercase letter</div>
-            <div class="requirement" id="lowercaseReq">One lowercase letter</div>
-            <div class="requirement" id="numberReq">One number</div>
-          </div>
+          <label for="password">Create Password</label>
+          <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
         </div>
-        
-        <div class="form-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm your password" required>
-        </div>
-        
-        <div class="form-options">
-          <div class="terms-agreement">
-            <input type="checkbox" id="terms" name="terms" required>
-            <label for="terms">
-              I agree to the 
-              <a href="terms.html">Terms of Service</a> and 
-              <a href="privacy.html">Privacy Policy</a>
-            </label>
-          </div>
-        </div>
-        
+
         <button type="submit" class="btn btn-primary signup-btn">Create Account</button>
       </form>
-      
+
       <div class="divider">
         <span>Or sign up with</span>
       </div>
-      
-     <div class="social-signup">
-      <a href="#" class="social-btn google-signup">Google</a>
-      <a href="#" class="social-btn twitter-signup">Twitter</a>
-    </div>
 
-      
+      <!-- SOCIAL SIGNUP BUTTONS -->
+      <div class="social-signup">
+        <button id="googleSignupBtn" class="social-btn">Sign Up with Google</button>
+        <button id="twitterSignupBtn" class="social-btn">Sign Up with Twitter</button>
+      </div>
+
       <div class="login-link">
-        Already have an account? <a href="login.html">Sign in</a>
+        Already have an account? <a href="login.html">Login</a>
       </div>
     </div>
   </section>
 
+  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-content">
@@ -111,6 +79,7 @@
             <li><a href="documentation.html">Documentation</a></li>
           </ul>
         </div>
+
         <div class="footer-column">
           <h3>Company</h3>
           <ul>
@@ -120,15 +89,15 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
+
         <div class="footer-column">
           <h3>Legal</h3>
           <ul>
             <li><a href="privacy.html">Privacy Policy</a></li>
             <li><a href="terms.html">Terms of Service</a></li>
-            <li><a href="security.html">Security</a></li>
-            <li><a href="compliance.html">Compliance</a></li>
           </ul>
         </div>
+
         <div class="footer-column">
           <h3>Connect</h3>
           <ul>
@@ -139,70 +108,60 @@
           </ul>
         </div>
       </div>
+
       <div class="footer-bottom">
-        <p>&copy; 2023 NovomindAI. All rights reserved.</p>
+        <p>&copy; 2024 NovomindAI. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- ✅ Corrected Script Order -->
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
- <script src="assets/js/supabase-config.js"></script>
- <script src="assets/js/auth.js"></script>
- <script src="assets/js/main.js"></script>
 
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/supabase-config.js"></script>
 
-  <!-- ✅ Password Strength Script -->
+  <!-- SOCIAL SIGNUP HANDLERS -->
   <script>
-    function initializePasswordStrength() {
-      const passwordInput = document.getElementById('password');
-      const strengthMeter = document.getElementById('passwordStrength');
-      const requirements = {
-        length: document.getElementById('lengthReq'),
-        uppercase: document.getElementById('uppercaseReq'),
-        lowercase: document.getElementById('lowercaseReq'),
-        number: document.getElementById('numberReq')
-      };
+    // GOOGLE SIGNUP
+    document.getElementById("googleSignupBtn").addEventListener("click", async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: "https://novomindai.xyz/dashboard.html"
+        }
+      });
+    });
 
-      if (passwordInput && strengthMeter) {
-        passwordInput.addEventListener('input', function() {
-          const password = passwordInput.value;
-          let strength = 0;
-          
-          const hasLength = password.length >= 8;
-          const hasUppercase = /[A-Z]/.test(password);
-          const hasLowercase = /[a-z]/.test(password);
-          const hasNumber = /[0-9]/.test(password);
-          
-          // Update UI
-          requirements.length.classList.toggle('met', hasLength);
-          requirements.uppercase.classList.toggle('met', hasUppercase);
-          requirements.lowercase.classList.toggle('met', hasLowercase);
-          requirements.number.classList.toggle('met', hasNumber);
-          
-          // Strength
-          if (hasLength) strength++;
-          if (hasUppercase) strength++;
-          if (hasLowercase) strength++;
-          if (hasNumber) strength++;
+    // TWITTER SIGNUP
+    document.getElementById("twitterSignupBtn").addEventListener("click", async () => {
+      await supabase.auth.signInWithOAuth({
+        provider: "twitter",
+        options: {
+          redirectTo: "https://novomindai.xyz/dashboard.html"
+        }
+      });
+    });
 
-          strengthMeter.className = 'strength-meter';
-          if (strength > 0) {
-            if (strength <= 2) {
-              strengthMeter.classList.add('strength-weak');
-            } else if (strength === 3) {
-              strengthMeter.classList.add('strength-medium');
-            } else {
-              strengthMeter.classList.add('strength-strong');
-            }
-          }
-        });
+    // EMAIL SIGNUP
+    document.getElementById("signupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: password
+      });
+
+      if (error) {
+        alert("Signup failed: " + error.message);
+      } else {
+        // redirect manually (Supabase will send verification email)
+        window.location.href = "dashboard.html";
       }
-    }
-
-    document.addEventListener('DOMContentLoaded', initializePasswordStrength);
+    });
   </script>
-
 
 </body>
 </html>
