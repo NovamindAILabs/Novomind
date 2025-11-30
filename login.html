@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+
   <!-- Header -->
   <header>
     <div class="container">
@@ -34,6 +35,7 @@
         <p>Login to your NovomindAI account</p>
       </div>
 
+      <!-- Email Login Form -->
       <form id="loginForm">
         <div class="form-group">
           <label for="email">Email Address</label>
@@ -61,7 +63,7 @@
       <!-- SOCIAL LOGIN BUTTONS -->
       <div class="social-signup">
         <button id="googleSignInBtn" class="social-btn">Login with Google</button>
-        <button id="twitterSignInBtn" class="social-btn">Login with Apple</button>
+        <button id="githubSignInBtn" class="social-btn">Login with GitHub</button>
       </div>
 
       <div class="login-link">
@@ -109,38 +111,50 @@
           </ul>
         </div>
       </div>
+
       <div class="footer-bottom">
         <p>&copy; 2023 NovomindAI. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/js/supabase-config.js"></script>
 
-  <!-- SOCIAL LOGIN HANDLERS -->
-  <script>
+  <!-- Supabase Client -->
+  <script type="module">
+    import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+    // 🔥 Replace with your keys
+    const supabase = createClient(
+      "YOUR_SUPABASE_URL",
+      "YOUR_SUPABASE_ANON_KEY"
+    );
+
+    // Google Login
     document.getElementById("googleSignInBtn").addEventListener("click", async () => {
-      await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: "https://novomind.in/dashboard.html"
+          redirectTo: "https://novomindai.xyz/dashboard.html"
         }
       });
+      if (error) alert(error.message);
     });
 
-    document.getElementById("twitterSignInBtn").addEventListener("click", async () => {
-      await supabase.auth.signInWithOAuth({
-        provider: "twitter",
+    // GitHub Login (NEW + Working)
+    document.getElementById("githubSignInBtn").addEventListener("click", async () => {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "github",
         options: {
-          redirectTo: "https://novomind.in/dashboard.html"
+          redirectTo: "https://novomindai.xyz/dashboard.html"
         }
       });
+      if (error) alert(error.message);
     });
   </script>
 
+  <!-- Email Login Script -->
   <script src="assets/js/login.js"></script>
   <script src="assets/js/main.js"></script>
+
 </body>
 </html>
